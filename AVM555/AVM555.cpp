@@ -1,4 +1,4 @@
-﻿#include<stdio.h>
+#include<stdio.h>
 #include<math.h>
 #include <iostream>
 #include <fstream>
@@ -83,9 +83,9 @@ double** CreateMatrix(int size)
 	}
 }
 
-void Matr(double** matr, int n, double eps)
+void ProcessMatr(double** matr, int n, double eps)
 {
-	float w0[100], w[100], summ = 0, w0norm[100], e, d, d0;
+	double w0[100], w[100], summ = 0, w0norm[100], e, d, d0;
 	int i, j, k, iterations = 0;
 	for (i = 0; i < n; i++)
 		w0[i] = 0;
@@ -93,7 +93,7 @@ void Matr(double** matr, int n, double eps)
 	do
 	{
 		for (i = 0; i < n; i++)
-			summ = summ + w0[i] * w0[i];
+			summ += w0[i] * w0[i];
 		d0 = sqrt(summ);
 		for (i = 0; i < n; i++)
 			w0norm[i] = w0[i] / d0;
@@ -101,17 +101,17 @@ void Matr(double** matr, int n, double eps)
 		{
 			w[i] = 0;
 			for (j = 0; j < n; j++)
-				w[i] = w[i] + matr[i][j] * w0norm[j];
+				w[i] += matr[i][j] * w0norm[j];
 		}
 		summ = 0;
 		for (i = 0; i < n; i++)
-			summ = summ + w[i] * w[i];
+			summ += w[i] * w[i];
 		d = sqrt(summ);
 		e = fabs(d - d0);
 		for (i = 0; i < n; i++)
 			w0[i] = w[i];
 		summ = 0;
-		iterations = iterations++;
+		iterations++;
 	} while (e > eps);
 	cout << "Delta:"; cout << d << endl;;
 
@@ -131,9 +131,9 @@ void Matr(double** matr, int n, double eps)
 
 	for (i = 0; i < n; i++)
 	{
-		cout << "eigenvalues"; cout << w0norm[i] << "\n" << endl;
+		cout << "Eigenvalues"; cout << w0norm[i] << "\n" << endl;
 	}
-	cout << "Iterations:" << iterations;
+	cout << "Number of iterations:" << iterations;
 
 
 
@@ -151,5 +151,5 @@ void main()
 	cout << "Set precision: ";
 	cin >> eps;
 	double** matrix = CreateMatrix(n);	
-	Matr(matrix, n, eps);
+	ProcessMatr(matrix, n, eps);
 }
